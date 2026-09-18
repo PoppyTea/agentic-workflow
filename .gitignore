@@ -14,3 +14,50 @@ _book
 *.epub
 *.mobi
 *.pdf
+
+# ===== Media =====
+*.jpg
+*.jpeg
+*.srt
+*.gif
+*.png
+
+*.mp3
+*.mp4
+
+# ==== Logi ====
+*.log
+
+# ==== klucze ===
+*sk-*
+.env*
+keyring*index*.md
+
+# ==== Coverage ====
+.coverage
+html[cov]/
+
+# ==== Python ====
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+dist/
+
+# ==== IDE ====
+.idea/
+.vscode/
+*.swp
+.zed/
+
+# ==== Cache ====
+.claude/state/
+.ruff_cache/
+.pytest_cache/
+
+# ==== Local Settings ====
+.claude/settings.local.json
+
+# ==== Local Helpers ====
+.help/
+**/*tmp.*
