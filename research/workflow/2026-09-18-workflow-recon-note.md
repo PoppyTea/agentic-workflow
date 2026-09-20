@@ -140,6 +140,9 @@ xychart-beta
 
 ### Badanie ETH Zurich (Gloaguen i in., luty 2026) [37][39][40][41]
 
+> [!bug] Korekta po przeczytaniu źródła (2026-09-21)
+> Liczby poniżej są przekłamane przez Gemini. W pracy: spadek 0,5% i 2% przy p = 0,87 i 0,37 (nieistotne), zysk plików ręcznych 2,4% przy p = 0,21 (nieistotny). Istotny jest tylko koszt (+20%, +23%) i przewaga ręcznych nad generowanymi (p = 0,038). Szczegóły w `2026-09-21-eth-agents-md-note.md`.
+
 > [!warning] To uderza wprost w DOX
 > Setki realnych zadań agentowych. Pliki `AGENTS.md`:
 > - **generowane przez LLM**: sukces **−3%**, koszt inferencji **+20%**;
