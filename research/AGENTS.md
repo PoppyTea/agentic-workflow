@@ -7,9 +7,10 @@
 
 ## Ownership
 
-- `videos/` — one note per video: `YYYY-MM-DD-<slug>.md`, date = day the note was written
+- `videos/` — one note per video plus syntheses of video triage runs
 - `prompts/` — prompts handed to external models (Gemini, NotebookLM); each prompt names its output file and, once run, the date and where the synthesis lives
 - `reports/` — raw outputs returned by external models, unedited; syntheses and assessments go to `videos/` or a sibling topic folder, never into `reports/`
+- File names follow `strategy/naming.md`: `YYYY-MM-DD-<topic>-<kind>[-<variant>].md`, prompt and its report share the topic
 
 ## Local Contracts
 

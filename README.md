@@ -31,6 +31,7 @@ dotąd rozproszenie w innych repozytoriach.
 
 - `research/` — materiały źródłowe i ich oceny (notatki z wideo, prompty dla zewnętrznych
   modeli, przeglądy workflow)
+- `strategy/` — trwałe dokumenty kierunkowe: struktura folderów, nazewnictwo
 - `AGENTS.md` (+ symlink `CLAUDE.md`) w każdym istotnym folderze — kontrakty pracy dla
   agentów (DOX), po angielsku, w formie wskaźników
 
