@@ -84,6 +84,7 @@ Default section order:
 
 - `README.md` — goals, phases, status
 - `research/` — source material and evaluations (video notes, prompts for external models, workflow surveys) → `research/AGENTS.md`
+- `strategy/` — durable direction documents: folder structure, naming; read the relevant file before creating files or folders → `strategy/AGENTS.md`
 - `.help/` — gitignored local scratch; nothing durable lives there
 - `LICENSE` — MIT
 
@@ -93,6 +94,7 @@ Default section order:
 - `AGENTS.md` files are pointer-first: rules, ownership, paths. Narrative and explanations go to `README.md` or to the owning folder's own docs
 - Detail depth follows nesting: root stays repo-wide, each child doc carries the concrete details of its own files
 - `README.md` owns the basic description of this repo; do not restate it here
+- Before creating a folder read `strategy/folder-structure.md`; before creating or renaming a file read `strategy/naming.md`
 
 ## User Preferences
 
@@ -104,4 +106,5 @@ Default section order:
 
 ## Child DOX Index
 
-- `research/AGENTS.md` — collected sources and their evaluations: `research/videos/`, `research/prompts/`
+- `research/AGENTS.md` — collected sources and their evaluations: `research/videos/`, `research/prompts/`, `research/reports/`
+- `strategy/AGENTS.md` — durable direction documents (`folder-structure.md`, `naming.md`)
