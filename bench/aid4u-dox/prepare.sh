@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Buduje dwa izolowane worktree aid4u do pomiaru wpływu DOX na agenta:
+# Buduje dwa izolowane snapshoty aid4u (świeże repo git z jednym commitem, bez historii) do pomiaru wpływu DOX na agenta:
 #   with-dox : repo jak jest, ale bez śladów rozwiązania s01e02
 #   no-dox   : to samo minus wszystkie AGENTS.md/CLAUDE.md w repo
 # Użycie: ./prepare.sh [REF]   (domyślnie HEAD repo aid4u)
@@ -14,10 +14,11 @@ mkdir -p "$BENCH"
 for v in with-dox no-dox; do
   dst=$BENCH/$v
   if [ -e "$dst" ]; then
-    echo "istnieje: $dst  (usuń: git -C $SRC worktree remove --force $dst)"; exit 1
+    echo "istnieje: $dst  (usuń: rm -rf $dst; stare worktree: git -C $SRC worktree prune)"; exit 1
   fi
-  echo "== $v: worktree z $REF"
-  git -C "$SRC" worktree add --detach -q "$dst" "$REF"
+  echo "== $v: snapshot $REF bez historii gita"
+  mkdir -p "$dst" && git -C "$SRC" archive "$REF" | tar -x -C "$dst"
+  git -C "$dst" init -q
   cp "$SRC/.env" "$dst/.env"
   rm -rf "$dst/$TASK/doc" && cp -r "$SRC/$TASK/doc" "$dst/$TASK/doc"
   # folder zadania: zostaje doc/ i __init__.py

@@ -11,12 +11,12 @@ wt=$BENCH/$v
 out=$HERE/results/$v-$id
 [ -d "$wt" ] || { echo "brak $wt, odpal prepare.sh"; exit 1; }
 cd "$wt"
-git reset -q --hard && git clean -qfd -e .env -e .venv
+git reset -q --hard && git clean -qfd -e .env -e .venv -e .flags.json && git checkout -q -- .flags.json
 echo "start $(date -Is) wariant=$v model=$model" | tee "$out.meta"
 claude -p "$(cat "$HERE/prompt.md")" \
   --model "$model" --max-turns 80 --no-session-persistence \
   --output-format stream-json --verbose \
-  --allowedTools "Read,Grep,Glob,Edit,Write,Bash(uv *),Bash(cat *),Bash(ls *),Bash(curl *),Bash(python3 *),Bash(git status*),Bash(git diff*),Bash(git log*),Bash(grep *),Bash(find *),Bash(head *),Bash(tail *),Bash(wc *),Bash(jq *)" \
+  --allowedTools "Read,Grep,Glob,Edit,Write,Bash(uv *),Bash(ls *),Bash(curl *),Bash(python3 *),Bash(git status*),Bash(git diff*),Bash(grep *),Bash(find *),Bash(wc *),Bash(jq *),Bash(sed -n *)" \
   > "$out.jsonl" || true
 echo "koniec $(date -Is)" | tee -a "$out.meta"
 git diff --stat > "$out.diff"; git status --short >> "$out.diff"
