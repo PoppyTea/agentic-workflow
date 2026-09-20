@@ -1,0 +1,29 @@
+  tokeny   słowa  plik
+     708     254  ~/.claude/CLAUDE.md
+     104          (nagłówek)
+     604          ## Odwołania do issues w wiadomościach do użytkownika
+    6377    2984  .
+      13          (nagłówek)
+     495          ## Purpose
+     285          ## Ownership
+     619          ## Local Contracts
+    1324          ## Work Guidance
+     311          ## Verification
+      53          ## Core Contract
+     141          ## Read Before Editing
+     157          ## Update After Editing
+      89          ## Hierarchy
+     117          ## Child Doc Shape
+      89          ## Style
+      66          ## Closeout
+    2446          ## User Preferences
+     172          ## Child DOX Index
+    4861    1653  tasks
+       4          (nagłówek)
+     594          ## Purpose
+     139          ## Ownership
+     403          ## Local Contracts
+     747          ## Work Guidance
+      35          ## Verification
+    2939          ## Child DOX Index
+   11946          RAZEM (chain do tasks/s01e02_findhim)
