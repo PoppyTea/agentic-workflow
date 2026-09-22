@@ -77,6 +77,7 @@ Ostateczną weryfikacją zadania jest flaga z huba, nie zielone testy.
 
 - AGENTS.md files are binding work contracts for their subtrees
 - Work products, source materials, instructions, records, assets, and durable docs must stay understandable from the nearest applicable AGENTS.md plus every parent AGENTS.md above it
+- Files from ./strategy are binding contracts for whole repo - do not modify them without permission from the user
 
 ## Read Before Editing
 
@@ -86,11 +87,13 @@ Ostateczną weryfikacją zadania jest flaga z huba, nie zielone testy.
 4. Read every AGENTS.md found along each route
 5. If a parent AGENTS.md lists a child AGENTS.md whose scope contains the path, read that child and continue from there
 6. Use the nearest AGENTS.md as the local contract and parent docs for repo-wide rules
-7. If docs conflict, the closer doc controls local work details, but no child doc may weaken DOX
+7. Identify kind of work you will be doing, and read files from ./strategy which rules and how to do such task in this repo. This contracts are binding and must be followed everywhere in repository.
+8. Read files from ./strategy/rules/common and any other file from ./strategy/rules which corelate to your work
+9. If docs conflict, the closer doc controls local work details, but no child doc may weaken DOX
 
 ## Update After Editing
 
-Every meaningful change requires a DOX pass before the task is done. Update the closest owning AGENTS.md when a change affects purpose, scope, ownership, durable structure, contracts, workflows, required inputs or outputs, user preferences, or the child index. Update parents when parent-level structure or index changes. Remove stale or contradictory text immediately. Record contracts, not history: no dates, PR numbers, or narratives of past changes
+Every meaningful change requires a DOX pass before the task is done. Update the closest owning AGENTS.md when a change affects purpose, scope, ownership, durable structure, contracts, workflows, required inputs or outputs, user preferences, or the child index. Update parents when parent-level structure or index changes. Remove stale or contradictory text immediately. Never describe history or past changes.
 
 ## Style
 
@@ -108,8 +111,6 @@ Every meaningful change requires a DOX pass before the task is done. Update the 
 ## User Preferences
 
 - **Commit routing:** zmiany w plikach `.py` idą przez feature branch + PR (uruchamia CodeRabbit). Wszystko inne (markdown, konfiguracja, symlinki, dane) commituje się prosto na `main`. Doc opisujący kod z tego samego PR może jechać razem z nim.
-- **Pliki strategii** Pliki z folderu `strategy/` zawierają opisy konwencji stosowanych w repo z podziałem na rodzaj zadań. Zapoznaj się z plikami pasującymi do Twojego zadania i używaj ich jako wytycznych.
-- **Pliki zasad** Pliki z folderu `strategy/rules/` zawierają zasady obowiązujące w całym repo podzielone wedle rodzaju wykonywanego zadania. Pliki z folderu `strategy/rules/common/` zawierają zasady obowiązujące w całym repo.
 - **Praca wsadowa:** gdy użytkownik dzieli implementację na niezależne jednostki („jedna funkcja na PR"), każda dostaje własny branch, testy i PR, otwarty przed rozpoczęciem następnej; commituj w trakcie, nie tylko na końcu.
 - **CodeRabbit:** auto-recenzje wyłączone; `@coderabbitai review` tylko po jawnej zgodzie użytkownika na dany PR. Po otwarciu PR sprawdź komentarze po 5 i po 10 minutach, potem przestań i poproś użytkownika o ping. Brak uwag zostawia ślad tylko w `issues/<N>/comments` („No actionable comments"), nie w `reviews`. Wytwory CodeRabbita (poprawki, testy, docstringi) to szkic do sprawdzenia; nie oddawaj mu docstringów i testów kodujących zmierzone fakty o świecie.
 - **Docstringi domyślnie tak** dla każdej funkcji, metody i klasy. **Komentarze inline domyślnie nie**, tylko gdy „dlaczego" albo zysk z danego „jak" nie wynika z kodu.

@@ -7,6 +7,6 @@
 == strategy-dox
   tokeny   słowa  plik
      708     254  ~/.claude/CLAUDE.md
-    2533    1110  .
+    2457    1116  .
     1052     342  tasks
-    4293          RAZEM (chain do tasks/s01e02_findhim)
+    4217          RAZEM (chain do tasks/s01e02_findhim)
