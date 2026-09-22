@@ -9,17 +9,24 @@
 # marnować kolejne wywołania.
 #
 # Użycie (odłączone od terminala):
-#   setsid nohup ./batch.sh clean-dox:1 strategy-dox:1 > results/batch.log 2>&1 < /dev/null &
+#   setsid nohup ./batch.sh results/PLAN.txt > results/batch.log 2>&1 < /dev/null &
 set -uo pipefail
 cd "$(dirname "$0")"
-[ $# -gt 0 ] || { echo "użycie: $0 <wariant>:<id> [<wariant>:<id> ...]"; exit 1; }
+# Pary bierzemy z pliku (jedna na linie), nie z argumentow: powloka uzytkownika to zsh,
+# ktory nie dzieli nieujetej zmiennej na slowa, wiec lista przekazana przez $PAIRS
+# trafialaby tu jako jeden argument i skrypt zrobilby jeden przebieg z bledym id.
+[ $# -eq 1 ] || { echo "uzycie: $0 <plik-z-parami>   (jedna para wariant:id na linie)"; exit 1; }
+[ -f "$1" ] || { echo "brak pliku z parami: $1"; exit 1; }
+mapfile -t PAIRS < <(grep -vE '^[[:space:]]*(#|$)' "$1")
+[ ${#PAIRS[@]} -gt 0 ] || { echo "pusta lista par"; exit 1; }
+echo "=== plan: ${#PAIRS[@]} przebiegow"
 
-BACKUP=${BACKUP:-/home/lis/projekty/14_moje_workflow/02_aid4u-bench/_results-backup}
+BACKUP=${BACKUP:-/home/lis/projekty/14_moje_workflow/02_aid4u-bench/_results-backup/round-2}
 mkdir -p results "$BACKUP"
 rm -f results/RATE_LIMIT
 
 done_already=0
-for pair in "$@"; do
+for pair in "${PAIRS[@]}"; do
   v=${pair%%:*}; id=${pair##*:}
   meta=results/$v-$id.meta
 
