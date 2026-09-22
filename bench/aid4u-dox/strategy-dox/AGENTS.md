@@ -108,6 +108,8 @@ Every meaningful change requires a DOX pass before the task is done. Update the 
 ## User Preferences
 
 - **Commit routing:** zmiany w plikach `.py` idą przez feature branch + PR (uruchamia CodeRabbit). Wszystko inne (markdown, konfiguracja, symlinki, dane) commituje się prosto na `main`. Doc opisujący kod z tego samego PR może jechać razem z nim.
+- **Pliki strategii** Pliki z folderu `strategy/` zawierają opisy konwencji stosowanych w repo z podziałem na rodzaj zadań. Zapoznaj się z plikami pasującymi do Twojego zadania i używaj ich jako wytycznych.
+- **Pliki zasad** Pliki z folderu `strategy/rules/` zawierają zasady obowiązujące w całym repo podzielone wedle rodzaju wykonywanego zadania. Pliki z folderu `strategy/rules/common/` zawierają zasady obowiązujące w całym repo.
 - **Praca wsadowa:** gdy użytkownik dzieli implementację na niezależne jednostki („jedna funkcja na PR"), każda dostaje własny branch, testy i PR, otwarty przed rozpoczęciem następnej; commituj w trakcie, nie tylko na końcu.
 - **CodeRabbit:** auto-recenzje wyłączone; `@coderabbitai review` tylko po jawnej zgodzie użytkownika na dany PR. Po otwarciu PR sprawdź komentarze po 5 i po 10 minutach, potem przestań i poproś użytkownika o ping. Brak uwag zostawia ślad tylko w `issues/<N>/comments` („No actionable comments"), nie w `reviews`. Wytwory CodeRabbita (poprawki, testy, docstringi) to szkic do sprawdzenia; nie oddawaj mu docstringów i testów kodujących zmierzone fakty o świecie.
 - **Docstringi domyślnie tak** dla każdej funkcji, metody i klasy. **Komentarze inline domyślnie nie**, tylko gdy „dlaczego" albo zysk z danego „jak" nie wynika z kodu.

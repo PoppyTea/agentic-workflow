@@ -7,8 +7,8 @@ Contracts, Work Guidance, Verification, ramy DOX (skrócone), preferencje jako r
 
 | plik | oryginał (tokeny) | clean | |
 |---|---|---|---|
-| root `AGENTS.md` | 6 377 | 2 324 | 36% |
+| root `AGENTS.md` | 6 377 | 2 347 | 37% |
 | `tasks/AGENTS.md` | 4 953 | 1 052 | 21% |
 
-Oryginały (po scrubie s01e02) w `original/`. Wariant nieuruchomiony; po akceptacji
-`prepare.sh` dostanie trzeci wariant, który podmienia oba pliki.
+Oryginały (po scrubie s01e02) w `original/`. `prepare.sh` buduje ten wariant, podmieniając
+oba pliki; wariant nie zawiera nakazu czytania `strategy/` (to różnica wobec `strategy-dox/`).
