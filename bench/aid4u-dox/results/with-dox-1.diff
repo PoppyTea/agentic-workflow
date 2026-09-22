@@ -1,0 +1,9 @@
+ .flags.json     |  5 +++--
+ data/AGENTS.md  |  1 +
+ tasks/AGENTS.md | 11 +++++++++--
+ 3 files changed, 13 insertions(+), 4 deletions(-)
+ M .flags.json
+ M data/AGENTS.md
+ M tasks/AGENTS.md
+?? data/output/s01e01_people/
+?? tasks/s01e02_findhim/solution.py

@@ -85,6 +85,7 @@ Default section order:
 - `README.md` — goals, phases, status
 - `research/` — source material and evaluations (video notes, prompts for external models, workflow surveys) → `research/AGENTS.md`
 - `strategy/` — durable direction documents: folder structure, naming; read the relevant file before creating files or folders → `strategy/AGENTS.md`
+- `bench/` — reproducible measurement setups behind research claims → `bench/AGENTS.md`
 - `.help/` — gitignored local scratch; nothing durable lives there
 - `LICENSE` — MIT
 
@@ -108,3 +109,4 @@ Default section order:
 
 - `research/AGENTS.md` — collected sources and their evaluations: `research/videos/`, `research/prompts/`, `research/reports/`
 - `strategy/AGENTS.md` — durable direction documents (`folder-structure.md`, `naming.md`)
+- `bench/AGENTS.md` — measurement experiments (`aid4u-dox/`)
