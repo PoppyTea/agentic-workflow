@@ -8,8 +8,13 @@ Dwa pomiary z notatki `research/workflow/2026-09-21-eth-agents-md-note.md`, sekc
 |---|---|
 | `with-dox` | aid4u jak jest, bez śladów rozwiązania s01e02 (folder zadania: tylko `doc/` i `__init__.py`; flaga, plan i wzmianki w innych plikach usunięte przez `scrub.py`) |
 | `no-dox` | to samo minus wszystkie `AGENTS.md` i `CLAUDE.md` w repo; globalny `~/.claude/CLAUDE.md` zostaje w obu |
-| `clean-dox` | with-dox z root i `tasks/AGENTS.md` podmienionymi na `clean-dox/` (DOX przycięty do reguły ETH: tylko to, czego nie ma w README i kodzie); chain 4 107 tokenów wobec 11 946 |
-| `strategy-dox` | clean-dox plus nakaz w root: czytaj `strategy/` wg rodzaju pracy i `strategy/rules/common/`; `strategy/AGENTS.md` jako router rodzaj pracy → plik, odchudzony `strategy/rules/AGENTS.md`, nowe `AGENTS.md` w `strategy/{skills,tasks,templates}/`; pliki w `strategy-dox/` |
+| `clean-dox` | with-dox z root i `tasks/AGENTS.md` podmienionymi na `clean-dox/` (DOX przycięty do reguły ETH: tylko to, czego nie ma w README i kodzie) oraz `strategy/**/AGENTS.md` z `strategy-routers/`; chain 4 107 tokenów wobec 11 946 |
+| `strategy-dox` | clean-dox plus nakaz w root `AGENTS.md`: punkt w Core Contract czyniący `strategy/` wiążącym i kroki 7–8 w Read Before Editing (czytaj `strategy/` wg rodzaju pracy oraz `strategy/rules/common/`). Snapshoty obu wariantów różnią się wyłącznie tym plikiem; chain 4 217 wobec 4 107 |
+
+`strategy-routers/` to wspólna nakładka `strategy/**/AGENTS.md` dla obu wariantów, żeby jedyną
+zmienną między nimi był nakaz. W 6 przebiegach `with-dox` i `no-dox` nie padło ani jedno
+wywołanie narzędzia dotykające `strategy/`, więc bez nakazu treść tych plików jest dla agenta
+niewidoczna i nie wchodzi do chaina.
 
 Snapshoty leżą w `/home/lis/projekty/14_moje_workflow/02_aid4u-bench/`, poza oboma repo, jako świeże repozytoria z jednym commitem. Pierwsza wersja używała `git worktree`, ale agent no-dox znalazł stare rozwiązanie przez `git log --all`; snapshot bez historii zamyka ten wyciek.
 Wynik s01e01 (lista podejrzanych) nie jest w worktree, bo `.cache` i `data/run-history` są gitignored; agent musi sam odpalić s01e01.

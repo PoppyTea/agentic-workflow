@@ -12,6 +12,7 @@
 
 - Scripts never modify the source repo they measure; they work on git worktrees and copies
 - Raw run outputs go to `<experiment>/results/` and are committed; interpretation goes to a note in `research/`
+- `AGENTS.md` files stored inside an experiment folder are measurement material for the repo under test, never contracts for this repository; the contract here is `bench/AGENTS.md`
 - Every experiment README states what is measured, the variants, and the cost and side effects of a run
 
 ## Work Guidance
