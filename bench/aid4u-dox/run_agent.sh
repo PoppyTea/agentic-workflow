@@ -9,6 +9,7 @@ HERE=$(cd "$(dirname "$0")" && pwd)
 v=$1; id=$2; model=${3:-sonnet}
 wt=$BENCH/$v
 out=$HERE/results/$v-$id
+mkdir -p "$HERE/results"   # results/ jest gitignored, po świeżym klonie nie istnieje
 [ -d "$wt" ] || { echo "brak $wt, odpal prepare.sh"; exit 1; }
 cd "$wt"
 git reset -q --hard && git clean -qfd -e .env -e .venv -e .flags.json && git checkout -q -- .flags.json

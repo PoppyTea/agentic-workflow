@@ -77,6 +77,7 @@ Ostateczną weryfikacją zadania jest flaga z huba, nie zielone testy.
 
 - AGENTS.md files are binding work contracts for their subtrees
 - Work products, source materials, instructions, records, assets, and durable docs must stay understandable from the nearest applicable AGENTS.md plus every parent AGENTS.md above it
+- Files from ./strategy are binding contracts for whole repo - do not modify them without permission from the user
 
 ## Read Before Editing
 
@@ -86,7 +87,9 @@ Ostateczną weryfikacją zadania jest flaga z huba, nie zielone testy.
 4. Read every AGENTS.md found along each route
 5. If a parent AGENTS.md lists a child AGENTS.md whose scope contains the path, read that child and continue from there
 6. Use the nearest AGENTS.md as the local contract and parent docs for repo-wide rules
-7. If docs conflict, the closer doc controls local work details, but no child doc may weaken DOX
+7. Identify kind of work you will be doing, and read files from ./strategy which rules and how to do such task in this repo. This contracts are binding and must be followed everywhere in repository.
+8. Read files from ./strategy/rules/common and any other file from ./strategy/rules which corelate to your work
+9. If docs conflict, the closer doc controls local work details, but no child doc may weaken DOX
 
 ## Update After Editing
 
@@ -117,7 +120,7 @@ Every meaningful change requires a DOX pass before the task is done. Update the 
 ## Child DOX Index
 
 - `core/`: architektura, LLM, bazowa obsługa zadań
-- `strategy/`: dokumenty strategiczne i workflow
+- `strategy/`: wiążące kontrakty repo (rodzaj pracy → plik), reguły recenzji, skille, szablony
 - `tasks/`: zadania kursu
 - `tests/`: testy
 - `data/`: dane zadań (`data/input/`, `data/output/`)

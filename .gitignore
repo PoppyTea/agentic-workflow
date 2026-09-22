@@ -61,3 +61,4 @@ dist/
 # ==== Local Helpers ====
 .help/
 **/*tmp.*
+bench/aid4u-dox/results/

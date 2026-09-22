@@ -1,5 +1,0 @@
- .flags.json | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
- M .flags.json
-?? tasks/s01e02_findhim/solution.py
-?? tasks/s01e02_findhim/test_solution.py

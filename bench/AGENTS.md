@@ -11,7 +11,9 @@
 ## Local Contracts
 
 - Scripts never modify the source repo they measure; they work on git worktrees and copies
-- Raw run outputs go to `<experiment>/results/` and are committed; interpretation goes to a note in `research/`
+- Raw run outputs stay local in `<experiment>/results/`, which is gitignored; only the scripts that produce them are committed
+- Because the raw outputs are not in the repository, the note in `research/` is the only durable record of a measurement: it must carry the per-run table, not just averages, plus the behavioural coding behind any claim
+- `AGENTS.md` files stored inside an experiment folder are measurement material for the repo under test, never contracts for this repository; the contract here is `bench/AGENTS.md`
 - Every experiment README states what is measured, the variants, and the cost and side effects of a run
 
 ## Work Guidance
