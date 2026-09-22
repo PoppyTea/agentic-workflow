@@ -1,0 +1,10 @@
+== clean-dox
+     708     254  ~/.claude/CLAUDE.md
+    2347    1037  .
+    1052     342  tasks
+    4107          RAZEM (chain do tasks/s01e02_findhim)
+== strategy-dox
+     708     254  ~/.claude/CLAUDE.md
+    2381    1051  .
+    1052     342  tasks
+    4141          RAZEM (chain do tasks/s01e02_findhim)

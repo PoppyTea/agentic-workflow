@@ -90,7 +90,7 @@ Ostateczną weryfikacją zadania jest flaga z huba, nie zielone testy.
 
 ## Update After Editing
 
-Every meaningful change requires a DOX pass before the task is done. Update the closest owning AGENTS.md when a change affects purpose, scope, ownership, durable structure, contracts, workflows, required inputs or outputs, user preferences, or the child index. Update parents when parent-level structure or index changes. Remove stale or contradictory text immediately. Never describe history or past changes.
+Every meaningful change requires a DOX pass before the task is done. Update the closest owning AGENTS.md when a change affects purpose, scope, ownership, durable structure, contracts, workflows, required inputs or outputs, user preferences, or the child index. Update parents when parent-level structure or index changes. Remove stale or contradictory text immediately. Record contracts, not history: no dates, PR numbers, or narratives of past changes
 
 ## Style
 
@@ -117,7 +117,7 @@ Every meaningful change requires a DOX pass before the task is done. Update the 
 ## Child DOX Index
 
 - `core/`: architektura, LLM, bazowa obsługa zadań
-- `strategy/`: dokumenty strategiczne i workflow
+- `strategy/`: wiążące kontrakty repo (rodzaj pracy → plik), reguły recenzji, skille, szablony
 - `tasks/`: zadania kursu
 - `tests/`: testy
 - `data/`: dane zadań (`data/input/`, `data/output/`)

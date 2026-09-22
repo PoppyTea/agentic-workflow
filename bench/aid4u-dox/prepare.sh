@@ -11,7 +11,7 @@ HERE=$(cd "$(dirname "$0")" && pwd)
 TASK=tasks/s01e02_findhim
 
 mkdir -p "$BENCH"
-for v in with-dox no-dox; do
+for v in ${VARIANTS:-with-dox no-dox clean-dox strategy-dox}; do
   dst=$BENCH/$v
   if [ -e "$dst" ]; then
     echo "istnieje: $dst  (usuń: rm -rf $dst; stare worktree: git -C $SRC worktree prune)"; exit 1
@@ -26,9 +26,20 @@ for v in with-dox no-dox; do
   rm -f "$dst/doc/superpowers/plans/s01e02.md"
   find "$dst" -name __pycache__ -type d -prune -exec rm -rf {} +
   python3 "$HERE/scrub.py" "$dst"
-  if [ "$v" = no-dox ]; then
-    find "$dst" -path "$dst/.venv" -prune -o \( -name AGENTS.md -o -name CLAUDE.md \) -print0 | xargs -0 rm -f
-  fi
+  case "$v" in
+    no-dox)
+      find "$dst" -path "$dst/.venv" -prune -o \( -name AGENTS.md -o -name CLAUDE.md \) -print0 | xargs -0 rm -f ;;
+    clean-dox)
+      cp "$HERE/clean-dox/AGENTS.md" "$dst/AGENTS.md"
+      cp "$HERE/clean-dox/tasks-AGENTS.md" "$dst/tasks/AGENTS.md" ;;
+    strategy-dox)
+      cp "$HERE/strategy-dox/AGENTS.md" "$dst/AGENTS.md"
+      cp "$HERE/strategy-dox/tasks-AGENTS.md" "$dst/tasks/AGENTS.md"
+      cp -r "$HERE/strategy-dox/strategy/." "$dst/strategy/"
+      for d in rules skills tasks templates; do
+        (cd "$dst/strategy/$d" && [ -e CLAUDE.md ] || ln -s ./AGENTS.md ./CLAUDE.md)
+      done ;;
+  esac
   # kontrola wycieków (doc/ zadania i dane wejściowe innych epizodów są dozwolone)
   if grep -rIl -i -E "findhim|BUSTED|s01e02" "$dst" --exclude-dir=.git --exclude-dir=.venv --exclude-dir=doc --exclude-dir=input --exclude=.gitignore | grep -v "$TASK/__init__.py" ; then
     echo "WYCIEK: powyższe pliki nadal wspominają s01e02"; exit 1
