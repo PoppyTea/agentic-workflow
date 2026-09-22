@@ -23,7 +23,7 @@ Wynik s01e01 (lista podejrzanych) nie jest w worktree, bo `.cache` i `data/run-h
 
 ```bash
 ./prepare.sh                       # buduje wszystkie 4 snapshoty (VARIANTS="..." zawęża), uv sync, kontrola wycieków, commit startowy
-setsid nohup results/batch-clean-strategy.sh > results/batch-clean-strategy.log 2>&1 < /dev/null &   # 3 clean-dox + 3 strategy-dox w tle
+setsid nohup ./batch.sh clean-dox:1 strategy-dox:1 clean-dox:2 strategy-dox:2 clean-dox:3 strategy-dox:3 > results/batch.log 2>&1 < /dev/null &   # seria w tle
 uvx --from tiktoken python3 count_chain.py /home/lis/projekty/14_moje_workflow/02_aid4u-bench/with-dox tasks/s01e02_findhim --sections   # pomiar 1
 ./run_agent.sh with-dox 1          # pomiar 2, jeden przebieg (domyślnie model sonnet)
 ./run_agent.sh no-dox 1
@@ -39,7 +39,12 @@ Każdy przebieg zaczyna od `git reset --hard` w worktree, więc przebiegi są ni
 
 ## Wyniki
 
-`results/<wariant>-<id>.jsonl` to surowy transkrypt, `.meta` czas i flaga, `.diff` zmiany w repo, `<wariant>-<id>-files/` kod, który agent napisał. Tabela zbiorcza: `python3 analyze.py results/*.jsonl`.
+`results/` jest **gitignored** i zostaje tylko lokalnie: `<wariant>-<id>.jsonl` to surowy transkrypt,
+`.meta` czas i flaga, `.diff` zmiany w repo, `<wariant>-<id>-files/` kod, który agent napisał.
+Tabela zbiorcza: `python3 analyze.py results/*.jsonl`.
+
+Trwałym zapisem pomiaru jest nota w `research/`, nie ten folder — musi zawierać tabelę per przebieg,
+bo po skasowaniu `results/` nie da się jej odtworzyć bez powtórzenia przebiegów.
 
 ## Zastrzeżenia
 
