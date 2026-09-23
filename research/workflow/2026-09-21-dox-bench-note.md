@@ -91,6 +91,10 @@ Nie tak, jak zakładał. Odczyty plików pod `strategy/`:
 
 **Żaden przebieg nie przeczytał `strategy/AGENTS.md`** — routera „rodzaj pracy → plik", po który nakaz wysyła wprost. Jeden przebieg (`strategy-dox-3`) dotarł do `strategy/tasks/workflow.md`, czyli do podfolderu wskazanego przez krok 7. Wariant bez nakazu sięgał do `strategy/` równie często (2/3), tyle że po pliki wskazane punktowo w Work Guidance.
 
+**Granica tego miernika.** „Ile plików instrukcji przeczytał" mierzy posłuszeństwo, nie trafność. Pominięcie pliku może być ignorowaniem instrukcji albo poprawną decyzją, że reguła nie dotyczy tej pracy — i te dwie rzeczy liczą się tu tak samo. Rozstrzygnięcie wymaga wskaźnika, który niesie informację o zakresie (tabela z kolumnami „wiążące w" i „stosować przy" ją niesie, nazwa pliku `rules_strategy.md` nie), albo zadania, w którym reguła faktycznie obowiązuje, bo wtedy zgodność jest zachowaniem obserwowalnym niezależnie od odczytu.
+
+Nie da się tego obejść czytaniem rozumowania agenta: bloki `thinking` są w transkrypcie obecne (29 w przebiegu), ale ich treść jest pusta, zostaje sam podpis. „Rozważył i odrzucił" jest na tych danych niefalsyfikowalne.
+
 Zastrzeżenie metodyczne: liczone są jawne wywołania `Read`. Claude Code dociąga `CLAUDE.md` z folderu czytanego pliku bez wpisu w transkrypcie, więc przebiegi, które czytały cokolwiek ze `strategy/`, mogły zobaczyć router mimo braku odczytu. Dla `clean-dox-3` i `strategy-dox-2` (zero odczytów pod `strategy/`) ta furtka jest zamknięta i wniosek jest pewny.
 
 Wniosek: **nakaz w ramach DOX nie przekierowuje uwagi agenta.** Punktowe wskazanie pliku w Work Guidance („nazewnictwo: `strategy/naming-conventions.md`") działa lepiej niż ogólna reguła „zidentyfikuj rodzaj pracy i doczytaj". To jest ta sama obserwacja co przy sekcjach przeglądowych: agent wykonuje instrukcje konkretne, ignoruje proceduralne.
