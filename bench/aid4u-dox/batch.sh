@@ -38,15 +38,17 @@ for pair in "${PAIRS[@]}"; do
   echo "=== $v $id $(date -Is)"
   ./run_agent.sh "$v" "$id" 2>&1 | grep -v mcp-sdk | tail -6
 
-  # limit albo inna awaria: brak linii result w transkrypcie, albo jawny komunikat
+  # Status bierzemy z pola is_error/subtype w linii result, NIE z grepa po transkrypcie:
+  # agent czyta pliki repo opisujace throttle i kod 429, wiec te napisy sa tam legalnie
+  # i grep dawal falszywy alarm przy kazdym udanym przebiegu.
   jsonl=results/$v-$id.jsonl
-  if ! grep -q '"type":"result"' "$jsonl" 2>/dev/null \
-     || grep -qiE 'rate.?limit|usage limit|429|quota' "$jsonl" 2>/dev/null; then
-    { echo "wariant=$v id=$id"; date -Is; tail -c 2000 "$jsonl" 2>/dev/null; } > results/RATE_LIMIT
-    echo "=== PRZERWANE: limit albo awaria przy $v $id, patrz results/RATE_LIMIT"
+  if ! status=$(python3 check_run.py "$jsonl"); then
+    { echo "wariant=$v id=$id"; date -Is; echo "status: $status"; } > results/RATE_LIMIT
+    echo "=== PRZERWANE przy $v $id: $status"
     rsync -a results/ "$BACKUP/"
     exit 2
   fi
+  echo "    $status"
 
   rsync -a results/ "$BACKUP/"
 done
