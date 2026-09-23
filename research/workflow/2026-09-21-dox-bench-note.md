@@ -7,6 +7,7 @@ status: runda 2 domknięta — 4 warianty po 10 przebiegów na zimno; tabela wsk
 
 # Pomiar: wpływ chaina AGENTS.md na Claude Code w aid4u (zadanie s01e02)
 
+- Wersja interaktywna rundy 2 (wykresy z tooltipami, pełna tabela): artefakt „Chain DOX pod pomiarem”, `https://claude.ai/artifact/2SBcmGfKPUZortLKbHBS6t` — prywatny, dostępny dla właściciela.
 - Środowisko i skrypty: `bench/aid4u-dox/README.md`. **Surowe transkrypty nie są w repo** (`results/` jest gitignored, kopia w `02_aid4u-bench/_results-backup/`), więc ta nota jest jedynym trwałym zapisem pomiaru.
 - Metoda: `claude -p` (pełny Claude Code w trybie nieinteraktywnym), model Sonnet, ten sam prompt, świeży snapshot repo bez historii gita i bez śladów rozwiązania. Globalny `~/.claude/CLAUDE.md` (708 tokenów) obecny we wszystkich wariantach.
 - **Koszt jest hipotetyczny.** Maszyna loguje się subskrypcją (`claudeAiOauth`, brak `ANTHROPIC_API_KEY`), więc `total_cost_usd` ze `stream-json` to wycena po cenniku API, nie wydatek. Jako miara porównawcza zużycia tokenów jest ważna, jako kwota — nie.
