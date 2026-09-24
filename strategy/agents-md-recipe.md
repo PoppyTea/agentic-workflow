@@ -1,8 +1,11 @@
 # Przepis: wybebeszenie AGENTS.md i zastąpienie treści wskaźnikami
 
-Instrukcja do przeniesienia na inne repo. Oparta na pomiarze z `bench/aid4u-dox/`
-(52 przebiegi Claude Code, dwie rundy, zadanie s01e02 w aid4u); pełne liczby i
-zastrzeżenia w `research/workflow/2026-09-21-dox-bench-note.md`.
+Instrukcja do przeniesienia na inne repo. Oparta na pomiarze z `bench/aid4u-dox/`:
+runda 1 (12 przebiegów, n=3 na wariant) i runda 2 (40 przebiegów, n=10), zadanie
+s01e02 w aid4u. Pełne liczby i zastrzeżenia w
+`research/workflow/2026-09-21-dox-bench-note.md` — **wyniki rundy 2 wchodzą do tej
+noty dopiero z PR #11**, więc dopóki nie jest zmergowany, część liczb poniżej nie
+ma pokrycia w wersji noty leżącej na `main`.
 
 Zasada przewodnia, która wyszła z pomiaru: **agent wykonuje instrukcje konkretne
 i ignoruje proceduralne.** Wszystko poniżej jest konsekwencją tego jednego zdania.
@@ -96,15 +99,23 @@ W 52 przebiegach obu rund **żaden wskaźnik nigdy nie doprowadził agenta do pl
 reguł.** Ani nakaz, ani tabela, ani pełny DOX: zero kontaktów.
 
 Zadziałało jedno: położenie pliku reguł **w folderze, w którym agent pracuje**,
-jako `rules_strategy.md`. Trzy przebiegi na dziesięć go otworzyły — jedyne
-kontakty z regułami w całym pomiarze.
+jako `rules_strategy.md`, **w parze z instrukcją, żeby go tam szukać**. Trzy
+przebiegi na dziesięć go otworzyły — jedyne kontakty z regułami w całym pomiarze.
+
+Uczciwe zastrzeżenie: wariant symlinkowy dostał oba zabiegi naraz (pliki na
+miejscu oraz krok „wylistuj `./*_strategy.md` i przeczytaj każdy"), a wariant
+z samą tabelą nie dostał żadnego z nich. Pomiar nie rozdziela, który składnik
+odpowiada za wynik. Wdrażaj więc oba i nie licz na to, że sama obecność pliku
+w folderze wystarczy.
 
 Stąd wdrożenie dwuczęściowe:
 
 - **tabela** mówi, które reguły obowiązują przy której operacji — to jest
   potrzebne, żeby agent wiedział, czego szukać i co pominąć;
 - **plik albo symlink leży na miejscu**, w folderze roboczym — bo sama tabela
-  do reguł nie doprowadza.
+  do reguł nie doprowadza;
+- **jeden krok w Read Before Editing** każe te pliki wylistować i przeczytać —
+  bo w zmierzonym wariancie oba te elementy występowały razem.
 
 Nazwa pliku nie może być `CLAUDE.md` ani `AGENTS.md`, jeśli chcesz mierzyć, czy
 agent sam do niego sięga: te dwie nazwy harness wstrzykuje do promptu automatycznie.
@@ -140,6 +151,9 @@ je tam, gdzie reguła naprawdę obowiązuje, nie wszędzie.
   do niego. Bloki rozumowania mają w transkrypcie pustą treść, więc „rozważył
   i odrzucił" jest nieodróżnialne od „nie zauważył".
 - **Koszt jest wyceną**, nie wydatkiem: maszyna logowała się subskrypcją.
-- **Najsilniejszy wynik jest negatywny** i jako taki jest najpewniejszy: nakaz
-  proceduralny nie działa. Wyniki pozytywne (tabela 7/10, symlinki 3/10) stoją na
-  n=10 i wymagają powtórzenia na innym repo, zanim uznasz je za regułę ogólną.
+- **Wynik dotyczący nakazu pochodzi z rundy 1** (n=3, ciepły cache, węższy punkt
+  końcowy) i nie został powtórzony w rundzie 2. Nie zestawiaj go wprost z 7/10
+  tabeli — to dwie różne miary z dwóch różnych serii. Traktuj „nie wprowadzaj
+  nakazu proceduralnego" jako mocną przesłankę, nie jako wynik dowiedziony.
+- **Wyniki pozytywne** (tabela 7/10, reguły 3/10) stoją na n=10 z jednej serii
+  i wymagają powtórzenia na innym repo, zanim uznasz je za regułę ogólną.
