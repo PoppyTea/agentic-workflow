@@ -34,6 +34,7 @@ uvx --from tiktoken python3 count_chain.py /home/lis/projekty/14_moje_workflow/0
 ./run_agent.sh with-dox 1          # pomiar 2, jeden przebieg (domyślnie model sonnet)
 ./run_agent.sh no-dox 1
 python3 analyze.py results/*.jsonl # tabela zbiorcza
+python3 verify.py                  # bramka: przelicza każdą liczbę z noty, exit 1 przy rozjeździe
 ```
 
 Każdy przebieg zaczyna od `git reset --hard` **i `git clean -fdx`** (z wyjątkiem `.env`, `.venv`,

@@ -15,6 +15,7 @@
 - A resumable runner decides what is done from the validated result, never from a marker the run itself wrote before validation
 - Raw run outputs stay local in `<experiment>/results/`, which is gitignored; only the scripts that produce them are committed
 - Because the raw outputs are not in the repository, the note in `research/` is the only durable record of a measurement: it must carry the per-run table, not just averages, plus the behavioural coding behind any claim
+- Every number a note states comes from a committed script that recomputes it and fails loudly on a mismatch; a figure produced by a throwaway shell snippet is unverifiable and does not belong in a note
 - `AGENTS.md` files stored inside an experiment folder are measurement material for the repo under test, never contracts for this repository; the contract here is `bench/AGENTS.md`
 - Every experiment README states what is measured, the variants, and the cost and side effects of a run
 

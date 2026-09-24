@@ -8,6 +8,7 @@ status: runda 2 domknięta — 4 warianty po 10 przebiegów na zimno; tabela wsk
 # Pomiar: wpływ chaina AGENTS.md na Claude Code w aid4u (zadanie s01e02)
 
 - Wersja interaktywna rundy 2 (wykresy z tooltipami, pełna tabela): artefakt „Chain DOX pod pomiarem”, `https://claude.ai/artifact/2SBcmGfKPUZortLKbHBS6t` — prywatny, dostępny dla właściciela.
+- **Każdą liczbę w tej nocie sprawdza uruchamialny skrypt**: `bench/aid4u-dox/verify.py` przelicza 43 twierdzenia od zera z transkryptów i kończy się kodem 1 przy jakimkolwiek rozjeździe. Stan: 43 zgodne, 0 rozjazdów; `uvx --with scipy python3 verify.py` dokłada kontrolę krzyżową testów Fishera (zgodność do 1e-9). Narracyjny raport z pierwszego przebiegu weryfikacji: `research/reports/2026-09-24-dox-bench-verification-report.md`.
 - Środowisko i skrypty: `bench/aid4u-dox/README.md`. **Surowe transkrypty nie są w repo** (`results/` jest gitignored, kopia w `02_aid4u-bench/_results-backup/`), więc ta nota jest jedynym trwałym zapisem pomiaru.
 - Metoda: `claude -p` (pełny Claude Code w trybie nieinteraktywnym), model Sonnet, ten sam prompt, świeży snapshot repo bez historii gita i bez śladów rozwiązania. Globalny `~/.claude/CLAUDE.md` (708 tokenów) obecny we wszystkich wariantach.
 - **Koszt jest hipotetyczny.** Maszyna loguje się subskrypcją (`claudeAiOauth`, brak `ANTHROPIC_API_KEY`), więc `total_cost_usd` ze `stream-json` to wycena po cenniku API, nie wydatek. Jako miara porównawcza zużycia tokenów jest ważna, jako kwota — nie.
@@ -31,7 +32,7 @@ status: runda 2 domknięta — 4 warianty po 10 przebiegów na zimno; tabela wsk
 | Wariant | Chain | n | Tury (mediana) | Koszt* (mediana) | Zakres kosztu | Flagi |
 |---|---|---|---|---|---|---|
 | `with-dox` | 11 946 | 7 | 57 | 2.62 | 2.08–2.84 | 8/10 |
-| `no-dox` | 708 | 10 | 48 | 1.70 | 1.39–3.19 | 10/10 |
+| `no-dox` | 708 | 10 | 48,5 | 1.70 | 1.39–3.19 | 10/10 |
 | `pointer-dox` | 4 797 | 10 | 53 | 2.03 | 1.28–2.80 | 10/10 |
 | `symlink-dox` | 4 151 | 10 | 58 | 2.48 | 1.83–3.87 | 10/10 |
 
@@ -39,16 +40,18 @@ status: runda 2 domknięta — 4 warianty po 10 przebiegów na zimno; tabela wsk
 
 #### Czy agent w ogóle dociera do `strategy/`
 
-Miara binarna na przebieg: czy padł choć jeden odczyt pliku ze `strategy/` albo symlinku `*_strategy.md`. Każdy kwadrat to jeden przebieg — przy n=10 procenty sugerowałyby precyzję, której nie ma.
+Miara binarna na przebieg: czy w wejściu **dowolnego** narzędzia (Read, Grep, Glob, komenda Bash) pojawiła się ścieżka pod `strategy/` albo symlink `*_strategy.md`. Gdyby liczyć wyłącznie jawne `Read`, jedyna zmiana to `symlink-dox` 5/10 zamiast 6/10.
+
+Liczą się tu wszystkie dziesięć przebiegów każdego wariantu, również trzy wykolejone `with-dox`: urwanie przebiegu nie unieważnia obserwacji „nie sięgnął po `strategy/`". Wykluczam je tylko z kosztu i tur, gdzie urwanie zaniża wartość. Każdy kwadrat to jeden przebieg — przy n=10 procenty sugerowałyby precyzję, której nie ma.
 
 | Wariant | Kontakt ze `strategy/` | Przebiegi |
 |---|---|---|
-| `with-dox` | **0/7** | `░░░░░░░` |
+| `with-dox` | **0/10** | `░░░░░░░░░░` |
 | `no-dox` | **1/10** | `█░░░░░░░░░` |
 | `pointer-dox` | **7/10** | `███████░░░` |
 | `symlink-dox` | **6/10** | `██████░░░░` |
 
-`pointer-dox` wobec `with-dox`: Fisher **p = 0,0098**. Wobec `no-dox`: **p = 0,0198**.
+`pointer-dox` wobec `with-dox` (7/10 wobec 0/10): Fisher **p = 0,0031**. Wobec `no-dox` (7/10 wobec 1/10): **p = 0,0198**. Wcześniejsza wersja noty liczyła `with-dox` z n=7 i podawała p = 0,0098, czyli **zaniżała** siłę własnego twierdzenia.
 
 W `pointer-dox` agent sięgał po `strategy/tasks/workflow.md` w 7 przebiegach — to dokładnie ten wiersz tabeli, który w kolumnie „stosować przy" mówi „tworzenie folderu zadania", czyli opisuje robotę wtedy wykonywaną. Trafiał we właściwy plik, nie w losowy.
 
@@ -56,7 +59,7 @@ W `pointer-dox` agent sięgał po `strategy/tasks/workflow.md` w 7 przebiegach �
 
 | Wariant | Kontakt z regułami | Przebiegi |
 |---|---|---|
-| `with-dox` | **0/7** | `░░░░░░░` |
+| `with-dox` | **0/10** | `░░░░░░░░░░` |
 | `no-dox` | **0/10** | `░░░░░░░░░░` |
 | `pointer-dox` | **0/10** | `░░░░░░░░░░` |
 | `symlink-dox` | **3/10** | `███░░░░░░░` |
@@ -67,7 +70,7 @@ Zastrzeżenie, bez którego ta liczba wprowadza w błąd: `symlink-dox` różni 
 
 #### Rozkład kosztu
 
-Koszt i liczba tur korelują na **r = 0,93**, więc pokazuję tylko koszt — drugi wykres powtarzałby tę samą informację. Wykres słupkowy średnich zatarłby tu rzecz najważniejszą, czyli nakładanie się rozkładów, więc zamiast niego wszystkie 37 ważnych przebiegów jako osobne punkty.
+Koszt i liczba tur korelują na **r = 0,93** (liczone na 37 ważnych przebiegach; z wykolejonymi r spada do 0,58, bo `with-dox-4` ma jedną turę przy koszcie 3,15), więc pokazuję tylko koszt — drugi wykres powtarzałby tę samą informację. Wykres słupkowy średnich zatarłby tu rzecz najważniejszą, czyli nakładanie się rozkładów, więc zamiast niego wszystkie 37 ważnych przebiegów jako osobne punkty.
 
 ```text
              ┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼─
@@ -81,7 +84,14 @@ with-dox     ··················●●····●····◆●
              ● jeden przebieg   ◉ dwa w tej samej pozycji   ◆┃ mediana wariantu
 ```
 
-Rozstęp wewnątrz wariantu przekracza różnice między większością par. Rozdzielają się tylko dwie: `pointer-dox` wobec `symlink-dox` (p = 0,044) i `no-dox` wobec `symlink-dox` (p = 0,047), testy permutacyjne dwustronne.
+Rozstęp wewnątrz wariantu przekracza różnice między większością par. Dalej trzeba uważać na to, co z czym się zestawia: wykres i tabele podają **mediany**, a test permutacyjny można postawić na różnicy median albo średnich — i wychodzi co innego.
+
+| Porównanie kosztu | permutacja (średnie) | permutacja (mediany) | Mann-Whitney |
+|---|---|---|---|
+| `pointer-dox` vs `symlink-dox` | 0,0436 | **0,1024** | 0,0630 |
+| `no-dox` vs `symlink-dox` | 0,0465 | **0,0113** | 0,0433 |
+
+Skoro raportuję mediany, wiążąca jest kolumna środkowa. **`symlink-dox` nie jest istotnie droższy od `pointer-dox`** (0,10; Mann-Whitney 0,06) — wcześniejsza wersja noty twierdziła inaczej, stawiając obok median test liczony na średnich. Istotna zostaje różnica wobec `no-dox` (0,0113).
 
 #### Synteza: co kosztuje, co działa
 
@@ -100,7 +110,7 @@ quadrantChart
     "symlink-dox": [0.739, 0.600]
 ```
 
-Oś pozioma to mediana kosztu, pionowa to odsetek przebiegów z kontaktem ze `strategy/`. `pointer-dox` jest jedynym wariantem w ćwiartce „tanio i kieruje". `with-dox` siedzi w „drogo i nie kieruje" — pełny chain 11 946 tokenów nie wysłał agenta do `strategy/` ani razu.
+Oś pozioma to mediana kosztu, pionowa to odsetek przebiegów z kontaktem ze `strategy/`. Punkt `with-dox` wykreślono na 0,04 zamiast 0,00, żeby nie leżał na krawędzi — to zabieg graficzny, faktyczna wartość to zero. `pointer-dox` jest jedynym wariantem w ćwiartce „tanio i kieruje". `with-dox` siedzi w „drogo i nie kieruje" — pełny chain 11 946 tokenów nie wysłał agenta do `strategy/` ani razu.
 
 #### Zachowania procesowe
 
@@ -117,6 +127,8 @@ Wzorzec z rundy 1 się utrzymał i wyostrzył: bez DOX agent nie robi DOX passa 
 `with-dox-4`, `with-dox-5` i `with-dox-10` zakończyły się, czekając na powiadomienie z pracy w tle, którego tryb `-p` nie dostarcza. Dwa nie zdobyły flagi; trzeci zdobył ją procesem w tle, pokazując w transkrypcie jedną turę.
 
 To **jedyne trzy przebiegi w całej serii**, które użyły `run_in_background` albo `Monitor`. 3/10 w `with-dox` wobec 0/30 w pozostałych, Fisher **p = 0,0121**.
+
+Ta liczba łączy trzy warianty w jedną grupę kontrolną i jest uprawniona tylko dlatego, że hipoteza brzmi „pełny DOX wobec wszystkiego innego" — preferencja o kill switchu występuje wyłącznie w `with-dox`. Porównanie parami z każdym wariantem osobno daje p = 0,21, czyli nic; siła wyniku bierze się z puli.
 
 Hipoteza, nie wniosek: pełny root `AGENTS.md` niesie preferencję o kill switchu („przy starcie czegokolwiek długotrwałego podaj komendę zatrzymania"), która normalizuje uruchamianie pracy w tle. Przycięte warianty tę narrację straciły. Do sprawdzenia osobnym pomiarem.
 
@@ -141,7 +153,7 @@ Hipoteza, nie wniosek: pełny root `AGENTS.md` niesie preferencję o kill switch
 | `pointer-dox-5` | 38 | 1.28 | 5.0 | 8 | tak | ● | – | – |
 | `pointer-dox-6` | 65 | 2.80 | 10.5 | 15 | tak | ● | – | ● |
 | `pointer-dox-7` | 50 | 1.87 | 11.0 | 9 | tak | ● | – | ● |
-| `pointer-dox-8` | 53 | 2.23 | 12.6 | 10 | tak | – | – | ● |
+| `pointer-dox-8` | 53 | 2.22 | 12.6 | 10 | tak | – | – | ● |
 | `pointer-dox-9` | 41 | 1.46 | 5.2 | 6 | tak | – | – | ● |
 | `pointer-dox-10` | 39 | 1.59 | 5.1 | 7 | tak | ● | – | ● |
 | `symlink-dox-1` | 65 | 2.59 | 15.2 | 13 | tak | – | – | ● |
@@ -153,7 +165,7 @@ Hipoteza, nie wniosek: pełny root `AGENTS.md` niesie preferencję o kill switch
 | `symlink-dox-7` | 45 | 1.83 | 6.7 | 6 | tak | – | – | ● |
 | `symlink-dox-8` | 72 | 3.01 | 9.4 | 23 | tak | ● | ● | ● |
 | `symlink-dox-9` | 58 | 1.84 | 8.8 | 11 | tak | ● | ● | ● |
-| `symlink-dox-10` | 56 | 2.44 | 10.9 | 5 | tak | ● | – | ● |
+| `symlink-dox-10` | 56 | 2.45 | 10.9 | 5 | tak | ● | – | ● |
 | `with-dox-1` | 64 | 2.65 | 14.6 | 12 | tak | – | – | ● |
 | `with-dox-2` | 57 | 2.08 | 7.4 | 16 | tak | – | – | ● |
 | `with-dox-3` | 71 | 2.71 | 10.0 | 9 | tak | – | – | ● |
@@ -244,14 +256,30 @@ Zastrzeżenie metodyczne: liczone są jawne wywołania `Read`. Claude Code doci�
 
 Wniosek: **nakaz w ramach DOX nie przekierowuje uwagi agenta.** Punktowe wskazanie pliku w Work Guidance („nazewnictwo: `strategy/naming-conventions.md`") działa lepiej niż ogólna reguła „zidentyfikuj rodzaj pracy i doczytaj". To jest ta sama obserwacja co przy sekcjach przeglądowych: agent wykonuje instrukcje konkretne, ignoruje proceduralne.
 
+### Korekta na wiele porównań
+
+Nota podaje pięć p-wartości jako osobne odkrycia. Przy pięciu testach i α = 0,05 samo przeglądanie danych produkuje fałszywe trafienia, więc poniżej Holm–Bonferroni na wersji, którą nota faktycznie raportuje (test binarny przy n=10, koszt na medianach):
+
+| Test | p surowe | p Holm | przeżywa |
+|---|---|---|---|
+| kontakt `pointer` vs `with` | 0,0031 | 0,0155 | tak |
+| kontakt `pointer` vs `no` | 0,0198 | 0,0451 | tak |
+| wykolejenia `with` vs reszta | 0,0121 | 0,0451 | tak |
+| koszt `no` vs `symlink` (mediany) | 0,0113 | 0,0451 | tak |
+| koszt `pointer` vs `symlink` (mediany) | 0,1024 | 0,1024 | nie |
+
+Cztery z pięciu przeżywają korektę. Jedyne, co odpada, to różnica kosztu między `pointer-dox` a `symlink-dox` — i odpada już bez korekty.
+
+Zastrzeżenie, którego korekta nie usuwa: prawdziwa rodzina porównań jest większa niż pięć, bo przejrzałem wiele miar i par wariantów, zanim wybrałem te do raportu. Holm na pięciu testach jest dolnym ograniczeniem ostrożności.
+
 ## Ocena
 
 - **Chain nie decyduje o skuteczności.** 38 flag na 40 przebiegów, a obie porażki to wykolejenia na pracy w tle, nie brak wiedzy. Przy chainie od 708 do 11 946 tokenów zadanie wychodzi zawsze. Zgodne z ETH.
-- **Wskaźnik z zakresem kieruje agenta do `strategy/`.** Porównanie wewnątrz rundy 2, na tym samym punkcie końcowym (dowolny kontakt ze `strategy/`) i w tych samych warunkach: `pointer-dox` 7/10 wobec `with-dox` 0/7 (p = 0,0098) i `no-dox` 1/10 (p = 0,0198). To jest jedyne porównanie, które te dane utrzymują.
+- **Wskaźnik z zakresem kieruje agenta do `strategy/`.** Porównanie wewnątrz rundy 2, na tym samym punkcie końcowym (dowolny kontakt ze `strategy/`) i w tych samych warunkach: `pointer-dox` 7/10 wobec `with-dox` 0/10 (p = 0,0031) i `no-dox` 1/10 (p = 0,0198). To jest jedyne porównanie, które te dane utrzymują.
 - **Nie mamy prawa powiedzieć, że wskaźnik zadziałał tam, gdzie nakaz zawiódł.** Wariantu z nakazem (`strategy-dox`) w rundzie 2 nie było, a liczba 0/3 z rundy 1 dotyczy węższego punktu końcowego (odczyt samego routera `strategy/AGENTS.md`), na ciepłym cache i przy n=3 — w tej samej rundzie `strategy-dox` sięgnął zresztą po `strategy/tasks/workflow.md`. Zestawianie 7/10 z 0/3 miesza dwie miary i dwie rundy. Rozstrzygnięcie wymaga wariantu z nakazem w tej samej serii co wskaźnik.
 - **Do reguł doprowadziło położenie pliku na miejscu **wraz z** instrukcją, żeby go szukać — i tych dwóch składników te dane nie rozdzielają.** Jedyne trzy kontakty z regułami dał `symlink-dox`, ale ten wariant dostał oba zabiegi naraz: symlinki w folderze roboczym i krok 5 w Read Before Editing, który wprost każe wylistować `./*_strategy.md` i przeczytać każdy plik. `pointer-dox` odpowiednika tego kroku nie miał. Wynik mówi więc, że działa to połączenie, a nie że wystarczy sama bliskość. Rozdzielenie wymaga wariantu z symlinkami bez kroku 5.
-- **Koszt tej bliskości jest mierzalny.** `symlink-dox` ma medianę 2,48 wobec 2,03 u `pointer-dox` (p = 0,044) i 1,70 u `no-dox` (p = 0,047). 90 symlinków w drzewie to nie jest darmowy dodatek.
-- **`pointer-dox` wypada najlepiej w bilansie.** Najtańszy wariant z DOX (mediana 2,03, praktycznie tyle co `no-dox` 1,70 przy zachowanym DOX passie 9/10), kieruje do `strategy/` najskuteczniej, żadnego wykolejenia, 10/10 flag.
+- **Koszt tej bliskości jest widoczny, ale słabiej udowodniony, niż sądziłem.** `symlink-dox` ma medianę 2,48 wobec 2,03 u `pointer-dox` — różnica **nieistotna** na teście median (0,10) i na Mann-Whitneyu (0,06). Istotna jest dopiero różnica wobec `no-dox` 1,70 (0,0113, przeżywa korektę Holma). Czyli: symlinki kosztują wobec braku DOX, a wobec samej tabeli wskaźników różnicy nie wykazaliśmy.
+- **`pointer-dox` wypada najlepiej w bilansie.** Kieruje do `strategy/` najskuteczniej (7/10, p = 0,0031 po korekcie 0,0155), zachowuje DOX pass 9/10, żadnego wykolejenia, 10/10 flag, przy medianie kosztu 2,03. Że jest tańszy od `symlink-dox`, jest prawdopodobne, ale nieudowodnione; że jest tańszy od `with-dox` (2,62) — nietestowane.
 - **Pełny DOX jest najgorszą opcją w tej serii.** Najwyższa mediana kosztu (2,62), zero kontaktu ze `strategy/`, trzy wykolejenia i dwie utracone flagi. Nie ma wymiaru, w którym wygrywa z `pointer-dox`.
 
 ### Co z tego wynika dla „dobrego AGENTS.md"
@@ -259,7 +287,7 @@ Wniosek: **nakaz w ramach DOX nie przekierowuje uwagi agenta.** Punktowe wskazan
 | Element | Werdykt | Podstawa |
 |---|---|---|
 | Local Contracts, Verification | zachować | `no-dox` 0/10 DOX pass; z przyciętym DOX 9/10 |
-| Tabela wskaźników z kolumnami „wiążące w" i „stosować przy" | **wprowadzić** | 7/10 kontaktu wobec 0/7, p = 0,0098, przy najniższym koszcie z wariantów DOX |
+| Tabela wskaźników z kolumnami „wiążące w" i „stosować przy" | **wprowadzić** | 7/10 kontaktu wobec 0/10, p = 0,0031 (Holm 0,0155), przy najniższym koszcie z wariantów DOX |
 | Reguła, która ma naprawdę obowiązywać | **położyć w folderze i kazać jej szukać** | jedyne 3 kontakty z regułami w 52 przebiegach; zabiegi nierozdzielone |
 | Nakaz „zidentyfikuj rodzaj pracy i doczytaj" | nie wprowadzać | 0/3 na router przy n=3, koszt 110 tokenów; dowód słabszy niż reszta tabeli |
 | Child DOX Index z narracją, opisy stanu, historia | usunąć | zero wykrywalnego efektu w obu rundach, 45% chaina |
