@@ -3,9 +3,9 @@
 Instrukcja do przeniesienia na inne repo. Oparta na pomiarze z `bench/aid4u-dox/`:
 runda 1 (12 przebiegów, n=3 na wariant) i runda 2 (40 przebiegów, n=10), zadanie
 s01e02 w aid4u. Pełne liczby i zastrzeżenia w
-`research/workflow/2026-09-21-dox-bench-note.md` — **wyniki rundy 2 wchodzą do tej
-noty dopiero z PR #11**, więc dopóki nie jest zmergowany, część liczb poniżej nie
-ma pokrycia w wersji noty leżącej na `main`.
+`research/workflow/2026-09-21-dox-bench-note.md`. Liczby dotyczące tabeli wskaźników
+i symlinków pochodzą z rundy 2; te dotyczące nakazu — z rundy 1, na węższym punkcie
+końcowym i przy ciepłym cache. Rund nie zestawiaj ze sobą wprost.
 
 Zasada przewodnia, która wyszła z pomiaru: **agent wykonuje instrukcje konkretne
 i ignoruje proceduralne.** Wszystko poniżej jest konsekwencją tego jednego zdania.
