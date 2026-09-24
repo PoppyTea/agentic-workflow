@@ -10,27 +10,45 @@ Dwa pomiary z notatki `research/workflow/2026-09-21-eth-agents-md-note.md`, sekc
 | `no-dox` | to samo minus wszystkie `AGENTS.md` i `CLAUDE.md` w repo; globalny `~/.claude/CLAUDE.md` zostaje w obu |
 | `clean-dox` | with-dox z root i `tasks/AGENTS.md` podmienionymi na `clean-dox/` (DOX przycięty do reguły ETH: tylko to, czego nie ma w README i kodzie) oraz `strategy/**/AGENTS.md` z `strategy-routers/`; chain 4 107 tokenów wobec 11 946 |
 | `strategy-dox` | clean-dox plus nakaz w root `AGENTS.md`: punkt w Core Contract czyniący `strategy/` wiążącym i kroki 7–8 w Read Before Editing (czytaj `strategy/` wg rodzaju pracy oraz `strategy/rules/common/`). Snapshoty obu wariantów różnią się wyłącznie tym plikiem; chain 4 217 wobec 4 107 |
+| `pointer-dox` | clean-dox plus tabela wskaźników w root `AGENTS.md`: nazwa, co reguluje, plik, **w których folderach wiążące**, **przy jakiej pracy stosować**. Zastępuje dawną sekcję `### Index`, żeby nie dublować wskaźników; chain 4 797 |
+| `symlink-dox` | clean-dox plus 90 symlinków `<nazwa>_strategy.md` w 33 folderach mających `AGENTS.md`, w tym `rules_strategy.md` → `strategy/rules/AGENTS.md` (generuje `link_strategy.py` z mapy folder → dokumenty), **oraz krok 5** w Read Before Editing każący wylistować i przeczytać `./*_strategy.md`. Uwaga: to **dwa zabiegi naraz** i wyniki ich nie rozdzielają — `pointer-dox` odpowiednika kroku 5 nie ma; chain 4 151 |
 
-`strategy-routers/` to wspólna nakładka `strategy/**/AGENTS.md` dla obu wariantów, żeby jedyną
-zmienną między nimi był nakaz. W 6 przebiegach `with-dox` i `no-dox` nie padło ani jedno
-wywołanie narzędzia dotykające `strategy/`, więc bez nakazu treść tych plików jest dla agenta
-niewidoczna i nie wchodzi do chaina.
+`strategy-routers/` to wspólna nakładka `strategy/**/AGENTS.md` dla wszystkich czterech wariantów
+z przyciętym DOX, żeby jedyną zmienną między nimi był root `AGENTS.md` (w `symlink-dox` dodatkowo
+symlinki). Pliki te nie leżą na ścieżce z roota do folderu zadania, więc nie wchodzą do chaina
+ładowanego automatycznie — kosztują tylko wtedy, gdy agent do nich sięgnie.
+
+Symlinki `*_strategy.md` celowo nie nazywają się `CLAUDE.md`: Claude Code wstrzykuje do promptu
+tylko `CLAUDE.md`, więc agent musi je sam znaleźć i otworzyć. To jest cała hipoteza tego wariantu,
+a `prepare.sh` tego pilnuje.
 
 Snapshoty leżą w `/home/lis/projekty/14_moje_workflow/02_aid4u-bench/`, poza oboma repo, jako świeże repozytoria z jednym commitem. Pierwsza wersja używała `git worktree`, ale agent no-dox znalazł stare rozwiązanie przez `git log --all`; snapshot bez historii zamyka ten wyciek.
-Wynik s01e01 (lista podejrzanych) nie jest w worktree, bo `.cache` i `data/run-history` są gitignored; agent musi sam odpalić s01e01.
+Wynik s01e01 (lista podejrzanych) nie jest w snapshocie, bo `.cache` i `data/run-history` są gitignored; agent musi sam odpalić s01e01.
 
 ## Kroki
 
 ```bash
-./prepare.sh                       # buduje wszystkie 4 snapshoty (VARIANTS="..." zawęża), uv sync, kontrola wycieków, commit startowy
-setsid nohup ./batch.sh clean-dox:1 strategy-dox:1 clean-dox:2 strategy-dox:2 clean-dox:3 strategy-dox:3 > results/batch.log 2>&1 < /dev/null &   # seria w tle
+./prepare.sh                       # buduje wszystkie 6 snapshotow (VARIANTS="..." zawęża), uv sync, kontrola wycieków, commit startowy
+setsid nohup ./batch.sh results/PLAN.txt > results/batch.log 2>&1 < /dev/null &   # seria w tle; PLAN.txt to lista par wariant:id, po jednej na linię
 uvx --from tiktoken python3 count_chain.py /home/lis/projekty/14_moje_workflow/02_aid4u-bench/with-dox tasks/s01e02_findhim --sections   # pomiar 1
 ./run_agent.sh with-dox 1          # pomiar 2, jeden przebieg (domyślnie model sonnet)
 ./run_agent.sh no-dox 1
 python3 analyze.py results/*.jsonl # tabela zbiorcza
+python3 verify.py                  # bramka: przelicza każdą liczbę z noty, exit 1 przy rozjeździe
 ```
 
-Każdy przebieg zaczyna od `git reset --hard` w worktree, więc przebiegi są niezależne. Minimum sensowne: 3 przebiegi na wariant.
+Każdy przebieg zaczyna od `git reset --hard` **i `git clean -fdx`** (z wyjątkiem `.env`, `.venv`,
+`.flags.json`), więc startuje na zimno. Samo `-fd` nie wystarczało: `.cache/` i `data/run-history/`
+są gitignored, więc przetrwały między przebiegami i przebieg N+1 zastawał dane pobrane przez N.
+Ten błąd skaził rundę 1 pomiaru.
+
+`batch.sh` jest wznawialny — pomija pary z domkniętym `.meta` — i po każdym przebiegu kopiuje
+`results/` do `_results-backup/` poza repo. O statusie przebiegu decyduje `check_run.py`, czytając
+pola `is_error`/`subtype` z linii `result`; nie wolno tego robić grepem po transkrypcie, bo agent
+czyta pliki repo opisujące throttle i kod 429.
+
+Minimum sensowne: 10 przebiegów na wariant. Przy n=3 rozrzut wewnątrz wariantu przekraczał
+wszystkie różnice między wariantami.
 
 ## Co mierzymy
 
@@ -52,4 +70,5 @@ bo po skasowaniu `results/` nie da się jej odtworzyć bez powtórzenia przebieg
 - Narzędzia agenta są ograniczone białą listą w `run_agent.sh` (bez `rm`, `git push`, `git log`, `cat`). Pierwsza wersja przepuszczała `cat`, agent no-dox zrobił `cat .env` (sam zamaskował wartości). Snapshot ma własny `.venv` i kopię `.env`.
 - `AGENTS_read` w `analyze.py` liczy tylko jawne odczyty plików instrukcji; chain ładowany automatycznie przy starcie nie jest w transkrypcie jako Read. Jego koszt widać pośrednio w `cache_read`.
 - Model: Sonnet-4.5 jak w pracy ETH; zmiana przez trzeci argument `run_agent.sh`.
-- Zatrzymanie: Ctrl-C w terminalu z `run_agent.sh`. Sprzątanie worktree: `git -C <aid4u> worktree remove --force <ścieżka>`.
+- **Znany tryb awarii:** agent może zlecić pracę w tle (`run_in_background`, `Monitor`) i zakończyć turę, czekając na powiadomienie, którego tryb `-p` nie dostarcza. Przebieg kończy się przedwcześnie. W rundzie 2 dotyczyło to 3 z 10 przebiegów `with-dox` i żadnego w pozostałych wariantach.
+- Zatrzymanie: `pkill -f batch.sh; pkill -f 'claude -p'`. Snapshoty to zwykłe katalogi, nie worktree — sprząta się je przez `rm -rf` i ponowne `prepare.sh`.

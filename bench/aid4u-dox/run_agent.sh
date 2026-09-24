@@ -12,7 +12,9 @@ out=$HERE/results/$v-$id
 mkdir -p "$HERE/results"   # results/ jest gitignored, po świeżym klonie nie istnieje
 [ -d "$wt" ] || { echo "brak $wt, odpal prepare.sh"; exit 1; }
 cd "$wt"
-git reset -q --hard && git clean -qfd -e .env -e .venv -e .flags.json && git checkout -q -- .flags.json
+# -x jest konieczne: .cache/ i data/run-history/ sa gitignored, wiec bez niego
+# przebieg N+1 startowal z danymi pobranymi przez przebieg N (lista s01e01 w cache)
+git reset -q --hard && git clean -qfdx -e .env -e .venv -e .flags.json && git checkout -q -- .flags.json
 echo "start $(date -Is) wariant=$v model=$model" | tee "$out.meta"
 claude -p "$(cat "$HERE/prompt.md")" \
   --model "$model" --max-turns 80 --no-session-persistence \
