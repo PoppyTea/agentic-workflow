@@ -11,7 +11,7 @@ Dwa pomiary z notatki `research/workflow/2026-09-21-eth-agents-md-note.md`, sekc
 | `clean-dox` | with-dox z root i `tasks/AGENTS.md` podmienionymi na `clean-dox/` (DOX przycięty do reguły ETH: tylko to, czego nie ma w README i kodzie) oraz `strategy/**/AGENTS.md` z `strategy-routers/`; chain 4 107 tokenów wobec 11 946 |
 | `strategy-dox` | clean-dox plus nakaz w root `AGENTS.md`: punkt w Core Contract czyniący `strategy/` wiążącym i kroki 7–8 w Read Before Editing (czytaj `strategy/` wg rodzaju pracy oraz `strategy/rules/common/`). Snapshoty obu wariantów różnią się wyłącznie tym plikiem; chain 4 217 wobec 4 107 |
 | `pointer-dox` | clean-dox plus tabela wskaźników w root `AGENTS.md`: nazwa, co reguluje, plik, **w których folderach wiążące**, **przy jakiej pracy stosować**. Zastępuje dawną sekcję `### Index`, żeby nie dublować wskaźników; chain 4 797 |
-| `symlink-dox` | clean-dox plus 90 symlinków `<nazwa>_strategy.md` w 33 folderach mających `AGENTS.md`, w tym `rules_strategy.md` → `strategy/rules/AGENTS.md`. Generuje `link_strategy.py` z mapy folder → dokumenty; chain 4 151 |
+| `symlink-dox` | clean-dox plus 90 symlinków `<nazwa>_strategy.md` w 33 folderach mających `AGENTS.md`, w tym `rules_strategy.md` → `strategy/rules/AGENTS.md` (generuje `link_strategy.py` z mapy folder → dokumenty), **oraz krok 5** w Read Before Editing każący wylistować i przeczytać `./*_strategy.md`. Uwaga: to **dwa zabiegi naraz** i wyniki ich nie rozdzielają — `pointer-dox` odpowiednika kroku 5 nie ma; chain 4 151 |
 
 `strategy-routers/` to wspólna nakładka `strategy/**/AGENTS.md` dla wszystkich czterech wariantów
 z przyciętym DOX, żeby jedyną zmienną między nimi był root `AGENTS.md` (w `symlink-dox` dodatkowo

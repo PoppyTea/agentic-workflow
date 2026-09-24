@@ -2,7 +2,7 @@
 # Seria przebiegów agenta, sekwencyjnie, w podanej kolejności. Warianty przeplataj,
 # żeby ewentualny dryf po stronie API albo huba rozłożył się równo.
 #
-# Wznawialny: pomija pary, które mają już domknięty przebieg (.meta z linią "koniec").
+# Wznawialny: pomija pary, których przebieg jest domkniety I przechodzi check_run.py.
 # Po każdym przebiegu robi kopię results/ poza repo, bo results/ jest gitignored
 # i transkrypty istnieją w jednym egzemplarzu.
 # Przy trafieniu w limit zapisuje results/RATE_LIMIT i kończy czysto, zamiast
@@ -30,7 +30,11 @@ for pair in "${PAIRS[@]}"; do
   v=${pair%%:*}; id=${pair##*:}
   meta=results/$v-$id.meta
 
-  if [ -f "$meta" ] && grep -q '^koniec' "$meta"; then
+  # Sam marker "koniec" nie wystarcza: run_agent.sh pisze go bezwarunkowo, zanim
+  # check_run.py obejrzy transkrypt. Przebieg odrzucony przez walidacje musi zostac
+  # powtorzony, a nie pominiety przy wznowieniu.
+  if [ -f "$meta" ] && grep -q '^koniec' "$meta" \
+     && python3 check_run.py "results/$v-$id.jsonl" >/dev/null 2>&1; then
     done_already=$((done_already + 1))
     continue
   fi

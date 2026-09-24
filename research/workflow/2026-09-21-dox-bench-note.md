@@ -24,7 +24,7 @@ status: runda 2 domknięta — 4 warianty po 10 przebiegów na zimno; tabela wsk
 | `clean-dox` | 4 107 | root i `tasks/AGENTS.md` przycięte do reguły ETH | 1 |
 | `strategy-dox` | 4 217 | `clean-dox` plus **nakaz** czytania `strategy/` w Read Before Editing | 1 |
 | `pointer-dox` | 4 797 | `clean-dox` plus **tabela wskaźników**: nazwa, plik, gdzie wiążące, kiedy stosować | 2 |
-| `symlink-dox` | 4 151 | `clean-dox` plus **symlinki** `*_strategy.md` w 33 folderach, w tym `rules_strategy.md` | 2 |
+| `symlink-dox` | 4 151 | `clean-dox` plus **symlinki** `*_strategy.md` w 33 folderach (w tym `rules_strategy.md`) **oraz krok 5**, który każe je wylistować i przeczytać — dwa zabiegi naraz | 2 |
 
 ### Runda 2: cztery warianty po dziesięć przebiegów
 
@@ -62,6 +62,8 @@ W `pointer-dox` agent sięgał po `strategy/tasks/workflow.md` w 7 przebiegach �
 | `symlink-dox` | **3/10** | `███░░░░░░░` |
 
 `symlink-dox` jest **jedynym wariantem w obu rundach, który kiedykolwiek otworzył plik reguł.** Wszystkie trzy trafienia to `rules_strategy.md` leżący w folderze zadania. Ani nakaz, ani tabela, ani pełny DOX nigdy tam nie doprowadziły.
+
+Zastrzeżenie, bez którego ta liczba wprowadza w błąd: `symlink-dox` różni się od pozostałych wariantów **dwoma** rzeczami naraz — symlinkami w folderze i krokiem 5, który nakazuje je wylistować i przeczytać. Na tych danych nie da się orzec, który z zabiegów odpowiada za wynik.
 
 #### Rozkład kosztu
 
@@ -245,8 +247,9 @@ Wniosek: **nakaz w ramach DOX nie przekierowuje uwagi agenta.** Punktowe wskazan
 ## Ocena
 
 - **Chain nie decyduje o skuteczności.** 38 flag na 40 przebiegów, a obie porażki to wykolejenia na pracy w tle, nie brak wiedzy. Przy chainie od 708 do 11 946 tokenów zadanie wychodzi zawsze. Zgodne z ETH.
-- **Wskaźnik z zakresem działa tam, gdzie nakaz zawiódł.** Tabela „nazwa, plik, gdzie wiążące, kiedy stosować" doprowadziła agenta do `strategy/` w 7/10 przebiegów. Nakaz proceduralny w rundzie 1 dał 0/3 na router. Różnica nie jest w tym, *że* wskazujemy, tylko w tym, że wskazanie niesie warunek zastosowania.
-- **Bliskość bije wskazanie, gdy chodzi o reguły.** Jedyne trzy kontakty z regułami w całym pomiarze dał wariant, który położył plik w folderze roboczym. Żaden odsyłacz nie zadziałał.
+- **Wskaźnik z zakresem kieruje agenta do `strategy/`.** Porównanie wewnątrz rundy 2, na tym samym punkcie końcowym (dowolny kontakt ze `strategy/`) i w tych samych warunkach: `pointer-dox` 7/10 wobec `with-dox` 0/7 (p = 0,0098) i `no-dox` 1/10 (p = 0,0198). To jest jedyne porównanie, które te dane utrzymują.
+- **Nie mamy prawa powiedzieć, że wskaźnik zadziałał tam, gdzie nakaz zawiódł.** Wariantu z nakazem (`strategy-dox`) w rundzie 2 nie było, a liczba 0/3 z rundy 1 dotyczy węższego punktu końcowego (odczyt samego routera `strategy/AGENTS.md`), na ciepłym cache i przy n=3 — w tej samej rundzie `strategy-dox` sięgnął zresztą po `strategy/tasks/workflow.md`. Zestawianie 7/10 z 0/3 miesza dwie miary i dwie rundy. Rozstrzygnięcie wymaga wariantu z nakazem w tej samej serii co wskaźnik.
+- **Do reguł doprowadziło położenie pliku na miejscu **wraz z** instrukcją, żeby go szukać — i tych dwóch składników te dane nie rozdzielają.** Jedyne trzy kontakty z regułami dał `symlink-dox`, ale ten wariant dostał oba zabiegi naraz: symlinki w folderze roboczym i krok 5 w Read Before Editing, który wprost każe wylistować `./*_strategy.md` i przeczytać każdy plik. `pointer-dox` odpowiednika tego kroku nie miał. Wynik mówi więc, że działa to połączenie, a nie że wystarczy sama bliskość. Rozdzielenie wymaga wariantu z symlinkami bez kroku 5.
 - **Koszt tej bliskości jest mierzalny.** `symlink-dox` ma medianę 2,48 wobec 2,03 u `pointer-dox` (p = 0,044) i 1,70 u `no-dox` (p = 0,047). 90 symlinków w drzewie to nie jest darmowy dodatek.
 - **`pointer-dox` wypada najlepiej w bilansie.** Najtańszy wariant z DOX (mediana 2,03, praktycznie tyle co `no-dox` 1,70 przy zachowanym DOX passie 9/10), kieruje do `strategy/` najskuteczniej, żadnego wykolejenia, 10/10 flag.
 - **Pełny DOX jest najgorszą opcją w tej serii.** Najwyższa mediana kosztu (2,62), zero kontaktu ze `strategy/`, trzy wykolejenia i dwie utracone flagi. Nie ma wymiaru, w którym wygrywa z `pointer-dox`.
@@ -257,8 +260,8 @@ Wniosek: **nakaz w ramach DOX nie przekierowuje uwagi agenta.** Punktowe wskazan
 |---|---|---|
 | Local Contracts, Verification | zachować | `no-dox` 0/10 DOX pass; z przyciętym DOX 9/10 |
 | Tabela wskaźników z kolumnami „wiążące w" i „stosować przy" | **wprowadzić** | 7/10 kontaktu wobec 0/7, p = 0,0098, przy najniższym koszcie z wariantów DOX |
-| Reguła, która ma naprawdę obowiązywać | **położyć w folderze** | jedyne 3 kontakty z regułami w 52 przebiegach obu rund |
-| Nakaz „zidentyfikuj rodzaj pracy i doczytaj" | nie wprowadzać | 0/3 na router, koszt 110 tokenów |
+| Reguła, która ma naprawdę obowiązywać | **położyć w folderze i kazać jej szukać** | jedyne 3 kontakty z regułami w 52 przebiegach; zabiegi nierozdzielone |
+| Nakaz „zidentyfikuj rodzaj pracy i doczytaj" | nie wprowadzać | 0/3 na router przy n=3, koszt 110 tokenów; dowód słabszy niż reszta tabeli |
 | Child DOX Index z narracją, opisy stanu, historia | usunąć | zero wykrywalnego efektu w obu rundach, 45% chaina |
 | Narracja o pracy w tle w User Preferences | **podejrzana** | 3/10 wykolejeń tylko w wariancie, który ją ma, p = 0,0121 |
 
@@ -266,4 +269,6 @@ Wniosek: **nakaz w ramach DOX nie przekierowuje uwagi agenta.** Punktowe wskazan
 
 - Miernik „kontakt z plikiem" nadal mierzy dotarcie, nie zastosowanie. Rozstrzygnie zadanie, w którym reguła obowiązuje — kandydat: `s02e03_failure` i reguła `r13`, której naruszenie jest w kodzie żywe (`solve():223` + `hub.submit():269` bez nadpisania `_submit()`), potwierdzone w historii gita i w [AID-15](https://linear.app/aid4u/issue/AID-15).
 - Hipoteza o kill switchu jako przyczynie wykolejeń: do sprawdzenia wariantem `with-dox` minus ta jedna preferencja.
+- Rozdzielenie bliskości od instrukcji: wariant z symlinkami, ale bez kroku 5. Bez tego wynik dotyczący reguł opisuje pakiet, nie mechanizm.
+- Nakaz wobec wskaźnika na wspólnym punkcie końcowym: `strategy-dox` nie biegł w rundzie 2, więc porównanie międzyrundowe jest niedopuszczalne.
 - Tokenizer: pomiar chaina w cl100k, Claude liczy polski inaczej. Nieskalibrowane.
