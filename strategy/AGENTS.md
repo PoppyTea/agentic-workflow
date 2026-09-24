@@ -9,6 +9,7 @@
 
 - `folder-structure.md` — where things live in the repo and outside it; read before creating a folder
 - `naming.md` — file and folder naming; read before creating or renaming a file
+- `agents-md-recipe.md` — how to strip an `AGENTS.md` down and replace its bulk with pointer tables, with the measured basis for each cut; read before reshaping instruction files in this or another repo
 
 ## Local Contracts
 
