@@ -22,7 +22,9 @@ Nazewnictwo plików i folderów jest w `naming.md`.
   - `prompts/`: prompty przekazywane zewnętrznym modelom.
   - `reports/`: surowe, nieedytowane wyjścia zewnętrznych modeli.
 - `strategy/`: dokumenty kierunkowe, płaska lista plików.
-- `bench/`: eksperymenty pomiarowe, jeden folder na eksperyment ze skryptami, promptem i surowymi wynikami w `results/`; interpretacja idzie do `research/`.
+- `bench/`: eksperymenty pomiarowe, jeden folder na eksperyment ze skryptami i promptem.
+  Surowe wyniki (`results/`) są gitignored i zostają lokalnie; trwałym zapisem pomiaru jest
+  nota w `research/`, więc musi nieść tabelę per przebieg, a nie same średnie.
 - `.help/`: lokalny scratch, gitignored. Nic trwałego.
 - Nowy folder powstaje, gdy ma własny cel i przynajmniej dwa pliki albo własne reguły.
   Wtedy dostaje `AGENTS.md` i symlink; wpis w indeksie rodzica.

@@ -11,7 +11,7 @@ HERE=$(cd "$(dirname "$0")" && pwd)
 TASK=tasks/s01e02_findhim
 
 mkdir -p "$BENCH"
-for v in ${VARIANTS:-with-dox no-dox clean-dox strategy-dox}; do
+for v in ${VARIANTS:-with-dox no-dox clean-dox strategy-dox pointer-dox symlink-dox}; do
   dst=$BENCH/$v
   if [ -e "$dst" ]; then
     echo "istnieje: $dst  (usuń: rm -rf $dst; stare worktree: git -C $SRC worktree prune)"; exit 1
@@ -29,9 +29,9 @@ for v in ${VARIANTS:-with-dox no-dox clean-dox strategy-dox}; do
   case "$v" in
     no-dox)
       find "$dst" -path "$dst/.venv" -prune -o \( -name AGENTS.md -o -name CLAUDE.md \) -print0 | xargs -0 rm -f ;;
-    clean-dox|strategy-dox)
-      # oba warianty dostaja ten sam zestaw strategy/**/AGENTS.md, wiec jedyna roznica
-      # miedzy nimi jest nakaz czytania strategy/ w root AGENTS.md
+    clean-dox|strategy-dox|pointer-dox|symlink-dox)
+      # wszystkie cztery dostaja ten sam zestaw strategy/**/AGENTS.md, wiec jedyna roznica
+      # miedzy nimi jest root AGENTS.md (plus symlinki w symlink-dox)
       cp "$HERE/$v/AGENTS.md" "$dst/AGENTS.md"
       cp "$HERE/$v/tasks-AGENTS.md" "$dst/tasks/AGENTS.md"
       cp "$HERE/strategy-routers/AGENTS.md" "$dst/strategy/AGENTS.md"
@@ -39,7 +39,14 @@ for v in ${VARIANTS:-with-dox no-dox clean-dox strategy-dox}; do
         mkdir -p "$dst/strategy/$d"
         cp "$HERE/strategy-routers/$d/AGENTS.md" "$dst/strategy/$d/AGENTS.md"
         (cd "$dst/strategy/$d" && [ -e CLAUDE.md ] || ln -s ./AGENTS.md ./CLAUDE.md)
-      done ;;
+      done
+      if [ "$v" = symlink-dox ]; then
+        python3 "$HERE/link_strategy.py" "$dst"
+        # kontrola: zaden wygenerowany symlink nie moze byc plikiem instrukcji
+        if find "$dst" -name '*_strategy.md' \( -name AGENTS.md -o -name CLAUDE.md \) | grep -q .; then
+          echo "BLAD: symlink nazwany jak plik instrukcji"; exit 1
+        fi
+      fi ;;
   esac
   # kontrola wycieków (doc/ zadania i dane wejściowe innych epizodów są dozwolone)
   if grep -rIl -i -E "findhim|BUSTED|s01e02" "$dst" --exclude-dir=.git --exclude-dir=.venv --exclude-dir=doc --exclude-dir=input --exclude=.gitignore | grep -v "$TASK/__init__.py" ; then
