@@ -20,6 +20,8 @@
 - Keep "Treść" (what the source says) and "Ocena" (our assessment) in separate sections; never mix them
 - Sponsored segments and product upsells are marked, not summarized
 - Claims about tools that were not verified against the user's real setup are marked `[do weryfikacji]`
+- The repo is public: raw outputs that quote paid course material at length (e.g. NotebookLM answers over AI_devs lessons) stay local in `.help/`, and the prompt names that path; syntheses paraphrase and cite lesson IDs
+- NotebookLM queries via `nlm` run each question in a fresh conversation (`-c <new uuid>`); follow-up turns come back without citations
 
 ## Work Guidance
 

@@ -41,3 +41,7 @@ dotąd rozproszenie w innych repozytoriach.
   engineering, które było triggerem projektu i ilustruje intencję, nie stanowi źródła
   wiedzy. Prompt dla Gemini do triage kolejnych materiałów; właściwy research zaczyna
   się po jego wynikach. Szkielet Pythona usunięty: nie miał uzasadnienia
+- 2026-09-26: synteza lekcji AI_devs 4 i AI_devs 3 pod kątem granicy między harnessem a
+  inżynierią kontekstu (hooki, minimalny DOX + docstringi, reguły jako kod),
+  `research/workflow/2026-09-26-aid-lessons-synthesis.md`. Zaplanowane: przegląd repo
+  4th-devs w poszukiwaniu wzorców do skopiowania; kandydaci w tej samej syntezie

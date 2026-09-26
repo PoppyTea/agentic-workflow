@@ -86,7 +86,7 @@ Default section order:
 - `research/` — source material and evaluations (video notes, prompts for external models, workflow surveys) → `research/AGENTS.md`
 - `strategy/` — durable direction documents: folder structure, naming; read the relevant file before creating files or folders → `strategy/AGENTS.md`
 - `bench/` — reproducible measurement setups behind research claims → `bench/AGENTS.md`
-- `.help/` — gitignored local scratch; nothing durable lives there
+- `.help/` — gitignored local scratch and local-only material that must not be published (raw reports quoting paid courses, see `research/AGENTS.md`); anything durable and publishable belongs elsewhere
 - `LICENSE` — MIT
 
 ## Local Contracts
