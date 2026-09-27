@@ -45,3 +45,6 @@ dotąd rozproszenie w innych repozytoriach.
   inżynierią kontekstu (hooki, minimalny DOX + docstringi, reguły jako kod),
   `research/workflow/2026-09-26-aid-lessons-synthesis.md`. Zaplanowane: przegląd repo
   4th-devs w poszukiwaniu wzorców do skopiowania; kandydaci w tej samej syntezie
+
+#### Wsparcie
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/PoppyTea/agentic-workflow?utm_source=oss&utm_medium=github&utm_campaign=PoppyTea%2Fagentic-workflow&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
