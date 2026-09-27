@@ -22,7 +22,7 @@ Notatniki:
 
 Pytania powstały przed czytaniem lekcji, z trzech źródeł, żeby odpowiedzi nie ustawiały pytań:
 
-- refleksje użytkownika po benchu DOX (`research/prompts/2026-09-24-dox-workflow-reflections.md`):
+- refleksje użytkownika po benchu DOX (`research/workflow/2026-09-24-dox-workflow-reflections-note.md`):
   reguły wstrzyknięte do kontekstu zawodzą; `strategy/` to „składzik" zamiast rozwiązania;
   metodyka powinna być skillem wywoływanym na żądanie; reguły z `qudo`/CodeRabbit są regułami
   recenzenta, nie autora; kierunek to deterministyczne lintery, testy i hooki;

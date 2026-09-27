@@ -299,7 +299,7 @@ status: synteza lekcji AI_devs 4 i AI_devs 3 pod kątem granicy harness ↔ inż
 ## Ocena
 
 Format odpowiedzi według „Pytań diagnostycznych” z
-`research/prompts/2026-09-24-dox-workflow-reflections.md`: najpierw TAK/NIE, skala 1–10 lub
+`research/workflow/2026-09-24-dox-workflow-reflections-note.md`: najpierw TAK/NIE, skala 1–10 lub
 krótka odpowiedź, potem rozwinięcie. Skala to moja ocena siły wsparcia w lekcjach, nie
 pomiar.
 

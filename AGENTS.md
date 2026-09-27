@@ -107,6 +107,6 @@ Default section order:
 
 ## Child DOX Index
 
-- `research/AGENTS.md` — collected sources and their evaluations: `research/videos/`, `research/prompts/`, `research/reports/`
+- `research/AGENTS.md` — collected sources and their evaluations: `research/videos/`, `research/prompts/`, `research/reports/`, `research/workflow/`
 - `strategy/AGENTS.md` — durable direction documents (`folder-structure.md`, `naming.md`, `agents-md-recipe.md`)
 - `bench/AGENTS.md` — measurement experiments (`aid4u-dox/`)
