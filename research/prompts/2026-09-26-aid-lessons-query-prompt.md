@@ -7,7 +7,8 @@ rozmowy notatnika, a odpowiedzi-kontynuacje wracają bez przypisów.
 
 Uruchomiony 2026-09-26 (44 zapytania). Synteza:
 `research/workflow/2026-09-26-aid-lessons-synthesis.md`. Surowy raport z przypisami i
-weryfikacją cytatów leży lokalnie w `.help/aid-lessons/`, poza repo: zawiera setki dosłownych
+weryfikacją cytatów leży poza repo, w
+`../05_Information_procesing/notebooklm-query/runs/2026-09-26-aid-lessons/` (tam też skrypty): zawiera setki dosłownych
 fragmentów płatnego kursu, a repo jest publiczne.
 
 Notatniki:
