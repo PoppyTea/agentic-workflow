@@ -86,7 +86,7 @@ Default section order:
 - `research/` — source material and evaluations (video notes, prompts for external models, workflow surveys) → `research/AGENTS.md`
 - `strategy/` — durable direction documents: folder structure, naming; read the relevant file before creating files or folders → `strategy/AGENTS.md`
 - `bench/` — reproducible measurement setups behind research claims → `bench/AGENTS.md`
-- `.help/` — gitignored local scratch; nothing durable lives there
+- `.help/` — gitignored local scratch; nothing durable lives there. Material that must not be published lives outside the repo (see `research/AGENTS.md`)
 - `LICENSE` — MIT
 
 ## Local Contracts
@@ -107,6 +107,6 @@ Default section order:
 
 ## Child DOX Index
 
-- `research/AGENTS.md` — collected sources and their evaluations: `research/videos/`, `research/prompts/`, `research/reports/`
+- `research/AGENTS.md` — collected sources and their evaluations: `research/videos/`, `research/prompts/`, `research/reports/`, `research/workflow/`
 - `strategy/AGENTS.md` — durable direction documents (`folder-structure.md`, `naming.md`, `agents-md-recipe.md`)
 - `bench/AGENTS.md` — measurement experiments (`aid4u-dox/`)
